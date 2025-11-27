@@ -38,6 +38,7 @@ app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
+
 // Routes
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
