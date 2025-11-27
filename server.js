@@ -28,8 +28,14 @@ const app = express();
 const server = http.createServer(app);
 
 // Middlewares
+// app.use(cors({
+//     origin: process.env.FRONTEND_URL || "*" ,
+//     credentials: true
+// }));
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+        callback(null, origin); // echo back the request origin
+    },
     credentials: true
 }));
 
