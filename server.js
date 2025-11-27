@@ -45,6 +45,10 @@ app.use("/venue", authenticate, venueRouter);
 app.use("/device", authenticate, deviceRouter);
 app.use("/alert", authenticate, alertsRouter);
 
+app.get("/", (req, res) => {
+    res.send("wellcome ");
+});
+
 
 const alertWss = espAlertSocket(server);
 
