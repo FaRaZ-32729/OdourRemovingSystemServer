@@ -1,6 +1,6 @@
 const WebSocket = require("ws");
 
-const SERVER_URL = "ws://localhost:5000/ws/alerts";
+const SERVER_URL = "ws://localhost:5050/ws/alerts";
 
 const DEVICES = [
     "device-001",
