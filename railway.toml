@@ -1,5 +1,0 @@
-[build]
-root = "OdourRemovingSystemServer"
-
-[deploy]
-start = "node index.js"
