@@ -328,8 +328,8 @@ const loginUser = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false,
+            sameSite: "none",
+            secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -461,7 +461,7 @@ const resetPassword = async (req, res) => {
 // logout user 
 const logoutUser = async (req, res) => {
     try {
-        res.clearCookie("token", { httpOnly: true, sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", secure: false });
+        res.clearCookie("token", { httpOnly: true, sameSite: process.env.NODE_ENV === "production" ? "strict" : "none", secure: true });
         res.status(200).json({ success: true, message: "Logged out successfully" });
     } catch (error) {
         console.error("Error in logout:", error);
