@@ -15,7 +15,7 @@ const sendEmail = async (to, subject, html) => {
     });
 
     await transporter.sendMail({
-        from: `"FrostKontroll" <${process.env.EMAIL_USER}>`,
+        from: `"FrostKontroll" <${process.env.MAILGUN_EMAIL}>`,
         to,
         subject,
         html,
