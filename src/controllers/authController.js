@@ -461,7 +461,7 @@ const resetPassword = async (req, res) => {
 // logout user 
 const logoutUser = async (req, res) => {
     try {
-        res.clearCookie("token", { httpOnly: true, sameSite: process.env.NODE_ENV === "production" ? "strict" : "none", secure: true });
+        res.clearCookie("token", { httpOnly: true, sameSite: "none", path: "/", secure: true });
         res.status(200).json({ success: true, message: "Logged out successfully" });
     } catch (error) {
         console.error("Error in logout:", error);
