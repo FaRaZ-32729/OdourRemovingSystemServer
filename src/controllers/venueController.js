@@ -1,4 +1,6 @@
+const userModel = require("../models/userModel");
 const venueModel = require("../models/venueModal");
+const mongoose = require("mongoose");
 
 // create venue
 const createVenue = async (req, res) => {
@@ -77,6 +79,42 @@ const getVenuesByOrganization = async (req, res) => {
     }
 };
 
+// get venues by user id
+const getUserVenues = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Validate userId
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid userId" });
+        }
+
+        // Find user
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // If no venues assigned
+        if (!user.venues || user.venues.length === 0) {
+            return res.status(200).json({
+                message: "No venues assigned to this user",
+                venues: [],
+            });
+        }
+
+        // Return user venues (they already contain venueId + venueName)
+        res.status(200).json({
+            message: "User venues fetched successfully",
+            venues: user.venues,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
 // update venue
 const updateVenue = async (req, res) => {
     try {
@@ -127,4 +165,4 @@ const deleteVenue = async (req, res) => {
     }
 };
 
-module.exports = { createVenue, getVenues, updateVenue, deleteVenue, getSingleVenue, getVenuesByOrganization };
+module.exports = { createVenue, getVenues, updateVenue, deleteVenue, getSingleVenue, getVenuesByOrganization, getUserVenues };
