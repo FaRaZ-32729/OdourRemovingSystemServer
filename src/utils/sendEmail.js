@@ -32,6 +32,39 @@
 // module.exports = sendEmail;
 
 
+// const formData = require("form-data");
+// const Mailgun = require("mailgun.js");
+// const fs = require("fs");
+// const path = require("path");
+
+// const mailgun = new Mailgun(formData);
+// const mg = mailgun.client({
+//     username: "api",
+//     key: process.env.MAILGUN_API_KEY
+// });
+
+// const sendEmail = async (to, subject, html) => {
+//     try {
+//         await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+//             from: `FrostKontroll <support@odor.iotfiysolutions.com>`,
+//             to,
+//             subject,
+//             html,
+//             attachment: [
+//                 {
+//                     filename: "logo.png",
+//                     data: fs.createReadStream(path.join(__dirname, "../assets/logo.png"))
+//                 }
+//             ]
+//         });
+
+//         console.log("Email sent ✔");
+//     } catch (err) {
+//         console.error("Mailgun error:", err);
+//     }
+// };
+
+// module.exports = sendEmail;
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 const fs = require("fs");
@@ -50,10 +83,13 @@ const sendEmail = async (to, subject, html) => {
             to,
             subject,
             html,
-            attachment: [
+
+            // Attach inline image similar to Nodemailer "cid"
+            inline: [
                 {
                     filename: "logo.png",
-                    data: fs.createReadStream(path.join(__dirname, "../assets/logo.png"))
+                    data: fs.createReadStream(path.join(__dirname, "../assets/logo.png")),
+                    knownLength: fs.statSync(path.join(__dirname, "../assets/logo.png")).size
                 }
             ]
         });

@@ -130,7 +130,8 @@ const createUser = async (req, res) => {
         });
 
         /* ---------------- SEND SETUP EMAIL ---------------- */
-        const setupLink = `http://localhost:5173/setup-password/${token}`;
+        // const setupLink = `http://localhost:5173/setup-password/${token}`;
+        const setupLink = `https://vercel-deployment-frontend-nine.vercel.app/setup-password/${token}`;
 
         await sendEmail(
             newUser.email,
