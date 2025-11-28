@@ -9,7 +9,7 @@ const sendEmail = async (to, subject, html) => {
         port: 587,
         secure: false,
         auth: {
-            user: process.env.MAILGUN_EMAIL || "support@odor.iotfiysolutions.com",
+            user: process.env.MAILGUN_EMAIL ,
             pass: process.env.MAILGUN_PASS,
         },
     });
