@@ -5,6 +5,7 @@ const organizationModel = require("../models/organizationModel");
 const mongoose = require("mongoose");
 const venueModel = require("../models/venueModal");
 
+
 //get all users for admin
 const getAllUsers = async (req, res) => {
     try {
@@ -16,6 +17,39 @@ const getAllUsers = async (req, res) => {
         return res.status(500).json({ message: "Server Error" })
     }
 };
+
+// get user by user id
+const getUsersByCreatorId = async (req, res) => {
+    try {
+        const { creatorId } = req.params;
+
+        // Validate ObjectId
+        if (!mongoose.Types.ObjectId.isValid(creatorId)) {
+            return res.status(400).json({ message: "Invalid creatorId" });
+        }
+
+        // Find users created by this creator
+        const users = await userModel
+            .find({ creatorId: creatorId })
+            .populate("venues", "venueId")
+            .populate("organization", "name")
+            .populate("creatorId", "name email");
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: "No users found for this creator" });
+        }
+
+        res.status(200).json({
+            message: "Users fetched successfully",
+            users,
+        });
+
+    } catch (error) {
+        console.error("Error fetching users by creator:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 // update user status for admin only
 const updateUserStatus = async (req, res) => {
@@ -309,4 +343,4 @@ const getUserStatus = async (req, res) => {
 };
 
 
-module.exports = { getAllUsers, updateUserStatus, updateUserProfile, deleteUser, getUsersByOrganizationId, addVenueToUser, removeVenueFromUser, getUserStatus }
+module.exports = { getAllUsers, updateUserStatus, updateUserProfile, deleteUser, getUsersByOrganizationId, addVenueToUser, removeVenueFromUser, getUserStatus, getUsersByCreatorId }

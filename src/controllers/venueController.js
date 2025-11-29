@@ -1,3 +1,4 @@
+const organizationModel = require("../models/organizationModel");
 const userModel = require("../models/userModel");
 const venueModel = require("../models/venueModal");
 const mongoose = require("mongoose");
@@ -152,6 +153,71 @@ const updateVenue = async (req, res) => {
     }
 };
 
+// for admin only wher admin can update organization beside venue name
+const updateVenueAsAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, organizationId } = req.body;
+
+        // Validate name
+        if (!name) {
+            return res.status(400).json({ message: "Venue name is required" });
+        }
+
+        // Validate venue ID
+        const venue = await venueModel.findById(id);
+        if (!venue) {
+            return res.status(404).json({ message: "Venue not found" });
+        }
+
+
+        let newOrganizationId = venue.organization; // default: existing org
+
+        // If admin wants to update organization
+        if (organizationId) {
+            if (!mongoose.Types.ObjectId.isValid(organizationId)) {
+                return res.status(400).json({ message: "Invalid organizationId" });
+            }
+
+            const organizationExists = await organizationModel.findById(organizationId);
+            if (!organizationExists) {
+                return res.status(404).json({ message: "Organization not found" });
+            }
+
+            newOrganizationId = organizationId;
+        }
+
+        // Check duplicate venue in the (new or same) organization
+        const duplicateVenue = await venueModel.findOne({
+            name,
+            organization: newOrganizationId,
+            _id: { $ne: id },
+        });
+
+        if (duplicateVenue) {
+            return res.status(400).json({
+                message: "A venue with this name already exists in this organization",
+            });
+        }
+
+        // Update fields
+        venue.name = name;
+        venue.organization = newOrganizationId;
+
+        const updatedVenue = await venue.save();
+
+        return res.json({
+            message: "Venue updated successfully",
+            venue: updatedVenue,
+        });
+
+    } catch (error) {
+        console.error("Error updating venue:", error);
+        res.status(500).json({ message: "Error updating venue" });
+    }
+};
+
+
 // delete venue
 const deleteVenue = async (req, res) => {
     try {
@@ -165,4 +231,4 @@ const deleteVenue = async (req, res) => {
     }
 };
 
-module.exports = { createVenue, getVenues, updateVenue, deleteVenue, getSingleVenue, getVenuesByOrganization, getUserVenues };
+module.exports = { createVenue, getVenues, updateVenue, deleteVenue, getSingleVenue, getVenuesByOrganization, getUserVenues, updateVenueAsAdmin };

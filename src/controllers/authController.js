@@ -124,6 +124,7 @@ const createUser = async (req, res) => {
             organization: finalOrganizationId,
             venues: assignedVenues,
             createdBy: creator.role,
+            creatorId: creator._id,
             setupToken: token,
             isActive: false,
             isVerified: false,
@@ -179,6 +180,7 @@ const createUser = async (req, res) => {
         res.status(500).json({ message: "Error creating user" });
     }
 };
+
 
 // set password
 const setPassword = async (req, res) => {
@@ -367,7 +369,8 @@ const forgotPassword = async (req, res) => {
         );
 
         // Create reset link
-        const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+        // const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+        const resetLink = `https://luckyone-iotfiysolutions.vercel.app/reset-password/${resetToken}`;
 
         // Send email
         await sendEmail(
