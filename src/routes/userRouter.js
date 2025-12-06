@@ -7,13 +7,13 @@ const adminOrAdminCreatedUser = require("../middlewere/adminOrAdminCreatedUser")
 const router = express.Router();
 
 router.post("/:userId/add-venue", authenticate, adminOrAdminCreatedUser, addVenueToUser);
-router.put("/update-status/:id", authenticate, adminOnly, updateUserStatus);
+router.put("/update-status/:id", authenticate, adminOrAdminCreatedUser, updateUserStatus);
 router.get("/all", authenticate, adminOnly, getAllUsers);
 router.get("/status/:userId", getUserStatus);
 router.get("/:creatorId", getUsersByCreatorId);
 router.get("/:orgId", authenticate, adminOrAdminCreatedUser, getUsersByOrganizationId)
-router.put("/update/:id", authenticate, adminOnly, updateUserProfile);
-router.delete("/delete/:id", authenticate, adminOnly, deleteUser);
+router.put("/update/:id", authenticate, adminOrAdminCreatedUser, updateUserProfile);
+router.delete("/delete/:id", authenticate, adminOrAdminCreatedUser, deleteUser);
 router.delete("/:userId/delete/:venueId", adminOrAdminCreatedUser, removeVenueFromUser);
 
 
