@@ -108,7 +108,14 @@ const getAllDevices = async (req, res) => {
 const getSingleDevice = async (req, res) => {
     try {
         const { id } = req.params;
-        const device = await deviceModel.findById(id).populate("venue", "name");
+        const device = await deviceModel.findById(id).populate({
+            path: "venue",
+            select: "name organization",
+            populate: {
+                path: "organization",
+                select: "name"
+            }
+        });
         if (!device) return res.status(404).json({ message: "No Device Found" });
         res.status(200).json({ device });
     } catch (error) {
