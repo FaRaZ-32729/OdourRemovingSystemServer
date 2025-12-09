@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema({
     resetTokenExpiry: { type: Date, default: null },
     createdBy: { type: String, required: true },
     creatorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
-    venues: [{ venueId: { type: mongoose.Schema.Types.ObjectId, ref: "Venue" }, venueName: { type: String } }]
+    venues: [{ venueId: { type: mongoose.Schema.Types.ObjectId, ref: "Venue" }, venueName: { type: String } }],
+    timer: { type: String, default: null }
 
 }, { timestamps: true });
 

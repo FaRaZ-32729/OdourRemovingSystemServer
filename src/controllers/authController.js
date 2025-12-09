@@ -47,7 +47,7 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, role, organizationId, venues } = req.body;
+        const { name, email, role, organizationId, venues, timer } = req.body;
 
         if (!name || !email || !role)
             return res.status(400).json({ message: "All fields are required" });
@@ -113,6 +113,25 @@ const createUser = async (req, res) => {
             }));
         }
 
+        /* --------------------- TIMER LOGIC  -------------------------- */
+
+        let assignedTimer;
+
+        if (creator.role === "admin") {
+            // Admin can assign custom timer
+            assignedTimer = timer !== undefined ? timer : null;
+        } else {
+            // USER → must pass same timer to sub-user
+            if (creator.timer === undefined || creator.timer === null) {
+                return res.status(400).json({
+                    message: "You do not have a timer assigned. Contact admin."
+                });
+            }
+
+            assignedTimer = creator.timer;
+        }
+
+
         /* ---------------- SETUP PASSWORD TOKEN ---------------- */
         const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
@@ -125,6 +144,7 @@ const createUser = async (req, res) => {
             venues: assignedVenues,
             createdBy: creator.role,
             creatorId: creator._id,
+            timer: assignedTimer,
             setupToken: token,
             isActive: false,
             isVerified: false,

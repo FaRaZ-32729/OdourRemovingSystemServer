@@ -168,12 +168,131 @@ const updateUserStatus = async (req, res) => {
 //         res.status(500).json({ message: "Error updating user" });
 //     }
 // };
+
+////////////////////new
+
+
+// const updateUserProfile = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { name, email, password, organization, venues } = req.body;
+
+//         const creator = req.user; // logged-in user making request
+
+//         // Get user to update
+//         const user = await userModel.findById(id);
+//         if (!user) {
+//             return res.status(404).json({ message: "User not found" });
+//         }
+
+//         /* ------------------------------------------------------
+//             COMMON VALIDATIONS
+//         ------------------------------------------------------ */
+
+//         // Check duplicate email
+//         if (email && email !== user.email) {
+//             const emailExists = await userModel.findOne({ email });
+//             if (emailExists) {
+//                 return res.status(400).json({ message: "Email already in use" });
+//             }
+//             user.email = email;
+//         }
+
+//         // Update name
+//         if (name) user.name = name;
+
+//         // Update password
+//         if (password) {
+//             user.password = await bcrypt.hash(password, 10);
+//         }
+
+//         /* ------------------------------------------------------
+//             ADMIN LOGIC
+//         ------------------------------------------------------ */
+//         if (creator.role === "admin") {
+
+//             // Admin CAN update organization
+//             if (organization) {
+//                 const orgExists = await organizationModel.findById(organization);
+//                 if (!orgExists) {
+//                     return res.status(404).json({ message: "Organization not found" });
+//                 }
+//                 user.organization = organization;
+//             }
+
+//             // Admin CANNOT update venues because admin-created users do not have venues
+//             if (venues) {
+//                 return res.status(400).json({
+//                     message: "Admin cannot update venues for this user"
+//                 });
+//             }
+//         }
+
+//         /* ------------------------------------------------------
+//             USER LOGIC (creator.role === "user")
+//         ------------------------------------------------------ */
+//         else if (creator.role === "user") {
+
+//             // User-created users CANNOT change organization
+//             if (organization && organization !== String(user.organization)) {
+//                 return res.status(403).json({
+//                     message: "You are not allowed to change organization"
+//                 });
+//             }
+
+//             /* ---- Venues Validation ---- */
+//             if (!venues || venues.length === 0) {
+//                 return res.status(400).json({
+//                     message: "At least one venue must be assigned"
+//                 });
+//             }
+
+//             // Validate venue IDs belong to same org
+//             const validVenues = await venueModel.find({
+//                 _id: { $in: venues },
+//                 organization: creator.organization,
+//             });
+
+//             if (validVenues.length !== venues.length) {
+//                 return res.status(400).json({
+//                     message: "One or more venues are invalid or not in your organization"
+//                 });
+//             }
+
+//             user.venues = validVenues.map(v => ({
+//                 venueId: v._id,
+//                 venueName: v.name,
+//             }));
+//         }
+
+//         /* ------------------------------------------------------
+//             SAVE USER
+//         ------------------------------------------------------ */
+//         await user.save();
+
+//         const updatedUser = await userModel
+//             .findById(id)
+//             .populate("organization", "name")
+//             .populate("venues.venueId", "name");
+
+//         res.status(200).json({
+//             message: "User updated successfully",
+//             user: updatedUser,
+//         });
+
+//     } catch (err) {
+//         console.error("Error updating user:", err);
+//         res.status(500).json({ message: "Error updating user" });
+//     }
+// };
+
+
 const updateUserProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, password, organization, venues } = req.body;
+        const { name, email, password, organization, venues, timer } = req.body;
 
-        const creator = req.user; // logged-in user making request
+        const creator = req.user; // logged-in user
 
         // Get user to update
         const user = await userModel.findById(id);
@@ -216,11 +335,24 @@ const updateUserProfile = async (req, res) => {
                 user.organization = organization;
             }
 
-            // Admin CANNOT update venues because admin-created users do not have venues
+            // Admin CANNOT update venues
             if (venues) {
                 return res.status(400).json({
                     message: "Admin cannot update venues for this user"
                 });
+            }
+
+            /* ------------------------------------------------------
+                ADMIN CAN UPDATE TIMER
+            ------------------------------------------------------ */
+            if (timer !== undefined) {
+                user.timer = timer;
+
+                // ALSO UPDATE ALL SUB-USERS
+                await userModel.updateMany(
+                    { creatorId: user._id },  // all sub-users
+                    { $set: { timer: timer } }
+                );
             }
         }
 
@@ -228,6 +360,13 @@ const updateUserProfile = async (req, res) => {
             USER LOGIC (creator.role === "user")
         ------------------------------------------------------ */
         else if (creator.role === "user") {
+
+            /* ---- TIMER PROTECTION ---- */
+            if (timer !== undefined) {
+                return res.status(403).json({
+                    message: "You are not allowed to update timer"
+                });
+            }
 
             // User-created users CANNOT change organization
             if (organization && organization !== String(user.organization)) {
@@ -243,7 +382,6 @@ const updateUserProfile = async (req, res) => {
                 });
             }
 
-            // Validate venue IDs belong to same org
             const validVenues = await venueModel.find({
                 _id: { $in: venues },
                 organization: creator.organization,
@@ -281,6 +419,7 @@ const updateUserProfile = async (req, res) => {
         res.status(500).json({ message: "Error updating user" });
     }
 };
+
 
 
 //delete user
@@ -347,8 +486,6 @@ const addVenueToUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
 
 
 // remove a venue form user's venue array
