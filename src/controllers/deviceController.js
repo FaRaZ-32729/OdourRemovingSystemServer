@@ -92,8 +92,22 @@ const createDevice = async (req, res) => {
 // get all devices
 const getAllDevices = async (req, res) => {
     try {
-        const devices = await deviceModel.find()
-            .populate("venue", "name");
+        const devices = await deviceModel.find().populate({
+            path: "venue",
+            select: "name organization",
+            populate: {
+                path: "organization",
+                select: "name"
+            }
+        })
+        // .populate({
+        //     path: "venue",
+        //     select: "name organization",
+        //     populate: {
+        //         path: "organization",
+        //         select: "name"
+        //     }
+        // .populate("venue", "name");
 
         if (!devices) return res.status(404).json({ message: "No Devices" });
 
