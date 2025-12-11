@@ -30,7 +30,8 @@ const deviceSchema = new mongoose.Schema(
     humidityAlert: { type: Boolean, default: false },
     odourAlert: { type: Boolean, default: false },
     espTemprature: { type: Number, default: null },
-    espHumidity: {type : Number , default : null}
+    espHumidity: { type: Number, default: null },
+    espOdour: { type: Number, default: null }
 
   },
   { timestamps: true }
