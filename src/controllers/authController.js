@@ -504,7 +504,6 @@ const logoutUser = async (req, res) => {
 
 // verified user after login
 const verifyMe = async (req, res) => {
-    console.log("verify");
     try {
         res.status(200).json({
             success: true,
