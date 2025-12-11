@@ -156,13 +156,13 @@ const createUser = async (req, res) => {
 
         await sendEmail(
             newUser.email,
-            "Set up your FrostKontroll account",
+            "Set up your Odour Management System account",
             `
             <div style="font-family: Arial, sans-serif; color: #333; background: #f5f8fa; padding: 20px; border-radius: 8px;">
                 <div style="text-align: center;">
-                    <img src="cid:logo.png" alt="FrostKontroll Logo" style="width: 120px; margin-bottom: 20px;" />
+                    <img src="cid:logo.png" alt="IOTFIY Logo" style="width: 120px; margin-bottom: 20px;" />
                 </div>
-                <h2 style="color: #0055a5;">Welcome to FrostKontroll!</h2>
+                <h2 style="color: #0055a5;">Welcome to Odour Management System!</h2>
                 <p>Hello <b>${newUser.name || newUser.email}</b>,</p>
                 <p>Your account has been created. Please click below to set your password:</p>
 
@@ -178,7 +178,7 @@ const createUser = async (req, res) => {
                 </p>
                 <hr/>
                 <p style="font-size: 12px; text-align: center; color: #888;">
-                    © ${new Date().getFullYear()} FrostKontroll. All rights reserved.
+                    © ${new Date().getFullYear()} IOTFIY Solutions. All rights reserved.
                 </p>
             </div>
             `

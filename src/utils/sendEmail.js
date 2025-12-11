@@ -80,7 +80,7 @@ const mg = mailgun.client({
 const sendEmail = async (to, subject, html) => {
     try {
         await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-            from: `FrostKontroll <support@odor.iotfiysolutions.com>`,
+            from: `LuckyOneMall <support@odor.iotfiysolutions.com>`,
             to,
             subject,
             html,
