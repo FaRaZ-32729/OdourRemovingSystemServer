@@ -244,7 +244,7 @@ const setPassword = async (req, res) => {
             `
   <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e6e6e6; border-radius: 8px; background-color: #ffffff;">
       <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #e6e6e6;">
-          <img src="cid:logo.png" alt="IOTFIY Logo" style="max-width: 180px;" />
+          <img src="cid:logo.png" alt="IOTFIY Logo" style="max-width: 150px;" />
       </div>
 
       <h2 style="color: #263238; margin-top: 30px;">Welcome to Odour Management System!</h2>
@@ -258,10 +258,10 @@ const setPassword = async (req, res) => {
           ${otp}
       </div>
 
-      <div style="text-align: center; margin: 20px 0;">
+      <div style="text-align: center; margin: 25px 0;">
             <a href="${setupLink}"
                 style="background-color: #0055a5; color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-size: 16px;">
-                Set Password
+                Verify OTP
             </a>
       </div>
 
