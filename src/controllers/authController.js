@@ -404,7 +404,7 @@ const forgotPassword = async (req, res) => {
         // Send email
         await sendEmail(
             user.email,
-            "Reset Your FrostKontroll Password",
+            "Reset Your Odour Management System account Password",
             `
             <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
                 <h2>Password Reset Request</h2>
@@ -421,7 +421,7 @@ const forgotPassword = async (req, res) => {
 
                 <p>If you didn’t request this, please ignore this email.</p>
                 <hr/>
-                <p style="font-size: 12px; color: #777;">© ${new Date().getFullYear()} FrostKontroll. All rights reserved.</p>
+                <p style="font-size: 12px; color: #777;">© ${new Date().getFullYear()} IOTFIY Solutions. All rights reserved.</p>
             </div>
             `
         );
