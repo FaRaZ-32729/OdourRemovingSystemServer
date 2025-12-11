@@ -53,7 +53,7 @@ const authenticate = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById(decoded._id);
         if (!user) return res.status(404).json({ message: "User not found" });
-        console.log("Authenticated User");
+        console.log(`Authenticated User : ${user.name}`);
         req.user = user;
         next();
     } catch (error) {
