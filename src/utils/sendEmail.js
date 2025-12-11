@@ -65,6 +65,7 @@
 // };
 
 // module.exports = sendEmail;
+
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 const fs = require("fs");

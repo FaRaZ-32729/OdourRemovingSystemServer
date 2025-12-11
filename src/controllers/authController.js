@@ -160,7 +160,7 @@ const createUser = async (req, res) => {
             `
             <div style="font-family: Arial, sans-serif; color: #333; background: #f5f8fa; padding: 20px; border-radius: 8px;">
                 <div style="text-align: center;">
-                    <img src="cid:companyLogo" alt="FrostKontroll Logo" style="width: 120px; margin-bottom: 20px;" />
+                    <img src="cid:logo.png" alt="FrostKontroll Logo" style="width: 120px; margin-bottom: 20px;" />
                 </div>
                 <h2 style="color: #0055a5;">Welcome to FrostKontroll!</h2>
                 <p>Hello <b>${newUser.name || newUser.email}</b>,</p>
