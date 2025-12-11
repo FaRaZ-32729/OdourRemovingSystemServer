@@ -236,16 +236,18 @@ const setPassword = async (req, res) => {
         await user.save();
 
 
+        const setupLink = `https://luckyone-iotfiysolutions.vercel.app/verify-otp/${token}`;
+
         await sendEmail(
             user.email,
-            "Verify Your FrostKontrol Account",
+            "Verify Your Odour Management System account",
             `
   <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e6e6e6; border-radius: 8px; background-color: #ffffff;">
       <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #e6e6e6;">
-          <img src="https://i.ibb.co/2Mdp9p0/frostKontrol.png" alt="FrostKontrol Logo" style="max-width: 180px;" />
+          <img src="cid:logo.png" alt="IOTFIY Logo" style="max-width: 180px;" />
       </div>
 
-      <h2 style="color: #263238; margin-top: 30px;">Welcome to FrostKontrol!</h2>
+      <h2 style="color: #263238; margin-top: 30px;">Welcome to Odour Management System!</h2>
       <p style="font-size: 14px; line-height: 1.6;">
           Hi <strong>${user.name || user.email}</strong>,
           <br><br>
@@ -256,17 +258,24 @@ const setPassword = async (req, res) => {
           ${otp}
       </div>
 
+      <div style="text-align: center; margin: 20px 0;">
+            <a href="${setupLink}"
+                style="background-color: #0055a5; color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-size: 16px;">
+                Set Password
+            </a>
+      </div>
+
       <p style="font-size: 14px; line-height: 1.6;">
           This OTP is valid for the next <strong>10 minutes</strong>. If you didn’t request this, please ignore this email.
       </p>
 
       <p style="font-size: 14px; line-height: 1.6;">
           Best Regards, <br>
-          <strong>FrostKontrol Team</strong>
+          <strong>LuckyOne Team</strong>
       </p>
 
       <div style="text-align: center; font-size: 12px; color: #777; margin-top: 30px;">
-          © ${new Date().getFullYear()} FrostKontrol, All rights reserved.
+          © ${new Date().getFullYear()} IOTFIY Solutions, All rights reserved.
           <br>
           This is an automated message, please do not reply.
       </div>
