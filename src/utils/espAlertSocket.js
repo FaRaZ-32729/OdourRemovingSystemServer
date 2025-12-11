@@ -42,7 +42,7 @@ const espAlertSocket = (server) => {
                         temperatureAlert: data.temperatureAlert === "HIGH",
                         humidityAlert: data.humidityAlert === "HIGH",
                         odourAlert: data.odourAlert === "DETECTED",
-                        lastUpdateTime: moment().tz("Asia/Karachi").toDate()
+                        lastUpdateTime: moment().tz("Asia/Karachi").format()
                     },
                     // { upsert: true, new: true }
                     { new: true }
