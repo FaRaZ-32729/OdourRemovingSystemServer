@@ -37,7 +37,7 @@ const espAlertSocket = (server) => {
                     {
                         espTemprature: data.temperature,
                         espHumidity: data.humidity,
-                        espOdour: data.odour,
+                        espOdour: data.odor,
                         temperatureAlert: data.temperatureAlert === "HIGH",
                         humidityAlert: data.humidityAlert === "HIGH",
                         odourAlert: data.odourAlert === "DETECTED"
