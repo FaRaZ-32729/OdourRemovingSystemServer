@@ -31,7 +31,8 @@ const deviceSchema = new mongoose.Schema(
     odourAlert: { type: Boolean, default: false },
     espTemprature: { type: Number, default: null },
     espHumidity: { type: Number, default: null },
-    espOdour: { type: Number, default: null }
+    espOdour: { type: Number, default: null },
+    lastUpdateTime: { type: Date, default: null }
 
   },
   { timestamps: true }
